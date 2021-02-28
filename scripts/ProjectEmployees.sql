@@ -80,3 +80,31 @@ having count(employee_id) =
   order by count(employee_id) desc
   limit 1
 );
+
+/**
+Write an SQL query that reports the most experienced employees in each project.
+In case of a tie, report all employees with the maximum number of experience years.
+The query result format is in the following example:
+
+Result table:
++-------------+---------------+
+| project_id  | employee_id   |
++-------------+---------------+
+| 1           | 1             |
+| 1           | 3             |
+| 2           | 1             |
++-------------+---------------+
+Solution: use subquery first to select the project_id and the maximum number of experience years
+then select all project_id and employee_id having the maximum years
+ */
+
+select p.project_id, e.employee_id
+from project p inner join employee e
+on p.employee_id = e.employee_id
+where (p.project_id, e.experience_years) in
+(
+    select p.project_id, max(e.experience_years)
+    from project p inner join employee e
+    on p.employee_id = e.employee_id
+    group by p.project_id
+);
