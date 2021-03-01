@@ -35,11 +35,15 @@ then reference the count_number as following to select the result
  */
 
 with activity_count as (
-  select a.id, a.name as activity, count(f.id) as count_number
+  select a.name as activity, count(f.id) as count_number
   from Activities a
-         inner join Friends f
-                    on a.name = f.activity
+  inner join Friends f
+  on a.name = f.activity
   group by a.id
+)
+
+with activity_window_count as (
+  select a.name as activity, count(f.id) as count_number
 )
 
 select activity
