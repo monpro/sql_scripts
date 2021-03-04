@@ -43,3 +43,21 @@ with max_price_table as (
 select seller_id from sales
 group by seller_id
 having sum(price) = (select max_price from max_price_table);
+
+/**
+Write an SQL query that reports the buyers who have bought S8 but not iPhone. Note that S8 and iPhone are products present in the Product table.
+
+Result table:
++-------------+
+| buyer_id    |
++-------------+
+| 1           |
++-------------+
+The buyer with id 1 bought an S8 but didn't buy an iPhone. The buyer with id 3 bought both.
+Solution: use sum to get the boundary of value
+ */
+
+select s.buyer_id
+from Sales s inner join Product p on s.product_id = p.product_id
+group by buyer_id
+having sum(p.product_name = 'S8') > 0 and sum(p.product_name = 'iPhone') = 0;
